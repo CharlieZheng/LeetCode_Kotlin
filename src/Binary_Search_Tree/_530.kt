@@ -7,31 +7,35 @@ class _530 {
     companion object {
         fun getMinimumDifference(root: TreeNode?): Int {
             if (root == null) return 0
-            var result = Integer.MAX_VALUE
+            var result = Integer.MIN_VALUE
             val queue = LinkedList<TreeNode>()
             queue.add(root)
             var left: Int
             var right: Int
+            var b =true
             while (!queue.isEmpty()) {
                 left = 0
                 right = 0
                 val item = queue.poll()
-                if (item.left != null) {
-                    left = item.left!!.`val`
-                    queue.add(item.left!!)
+
+                item.left ?.let {
+                    left = it.`val`
+                    queue.add(it)
                 }
-                if (item.right != null) {
-                    right = item.right!!.`val`
-                    queue.add(item.right!!)
+                item.right ?.let {
+                    right = it.`val`
+                    queue.add(it)
                 }
-                if (Math.abs(item.`val` - left) <= Math.abs(item.`val` - right) && Math.abs(item.`val` - left) < result) {
-                    result = Math.abs(item.`val` - left)
+                if (Math.abs(item.`val` - left) >= Math.abs(item.`val` - right) && Math.abs(item.`val` - left) > result) {
+                    b = if (left-item.`val`<0) false else true
+                    result = Math.abs(left-item.`val`)
                 }
-                if (Math.abs(item.`val` - left) >= Math.abs(item.`val` - right) && Math.abs(item.`val` - right) < result) {
-                    result = Math.abs(item.`val` - right)
+                if (Math.abs(item.`val` - left) <= Math.abs(item.`val` - right) && Math.abs(item.`val` - right) > result) {
+                    b = if (right-item.`val`<0) false else true
+                    result = Math.abs(right-item.`val`)
                 }
             }
-            return result
+            return if (b) result else -result
         }
 
         @JvmStatic
