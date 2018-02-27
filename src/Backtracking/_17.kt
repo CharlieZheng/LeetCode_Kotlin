@@ -1,151 +1,54 @@
 package Backtracking
 
-class _401 {
-    enum class E(val num: Int, val type: Char) {
-        _1(1, 'h'),
-        _2(2, 'h'),
-        _3(4, 'h'),
-        _4(8, 'h'),
-        _5(1, 's'),
-        _6(2, 's'),
-        _7(4, 's'),
-        _8(8, 's'),
-        _9(16, 's'),
-        _10(32, 's')
-    }
-
-    private fun end(num: Int, temp: StringBuffer): Boolean {
-        val size = temp.length
-        for (i in 0 until num) {
-            if (temp[size - 1 - i] == '0') return false
+class _17 {
+    private val c2 = charArrayOf('a', 'b', 'c')
+    private val c3 = charArrayOf('d', 'e', 'f')
+    private val c4 = charArrayOf('g', 'h', 'i')
+    private val c5 = charArrayOf('j', 'k', 'l')
+    private val c6 = charArrayOf('m', 'n', 'o')
+    private val c7 = charArrayOf('p', 'q', 'r', 's')
+    private val c8 = charArrayOf('t', 'u', 'v')
+    private val c9 = charArrayOf('w', 'x', 'y', 'z')
+    private val c = arrayOf(c2, c3, c4, c5, c6, c7, c8, c9)
+    fun letterCombinations(digits: String): List<String> {
+        var list = ArrayList<String>()
+        if (digits.length <= 0) return list
+        val i = digits[0].toInt() - 50
+        if (i < 0 || i >= c.size) return list
+        c[i].forEach {
+            list.add(it.toString())
         }
-        return true
-    }
+        val temp = ArrayList<String>()
+        digits.forEachIndexed { index, d ->
+            if (index > 0) {
+                val i_ = d.toInt() - 48
+                if (i_ > 1 && i_ < 10) {
 
-    fun readBinaryWatch(num: Int): List<String> {
-        val list = ArrayList<String>()
-        val temp = StringBuffer()
-        var numTemp = num
-        val size = E.values().size
-        for (i in 0 until size) {
-            temp.append(if (numTemp-- > 0) '1' else '0')
-        }
-        val eList = arrayListOf<E>()
-
-
-
-        eList.clear()
-        for (i in 0 until size) {
-            if (temp[i] == '1') eList.add(E.values()[i])
-        }
-        var h = 0
-        var m = 0
-        eList.forEach {
-            when (it.type) {
-                'h' -> {
-                    h += it.num
-                }
-                's' -> {
-                    m += it.num
-                }
-            }
-        }
-        if (h >= 12 || m > 59) {
-        } else if (m.toString().length < 2) {
-            list.add(h.toString() + ":0" + m.toString())
-        } else {
-            list.add(h.toString() + ":" + m.toString())
-
-        }
-        while (!end(num, temp)) {
-            val index = temp.indexOf("10")
-
-            temp.replace(index, index + 2, "01")
-
-            val cnt = StringBuffer()
-            for (i in 0 until index) {
-                if (temp[i] == '1') cnt.append('1')
-            }
-            if (!cnt.isNullOrEmpty()) {
-                while (cnt.length < index) {
-                    cnt.append('0')
-                }
-                temp.replace(0, index, cnt.toString())
-            }
-
-            println(temp)
-
-            eList.clear()
-            for (i in 0 until size) {
-                if (temp[i] == '1') eList.add(E.values()[i])
-            }
-
-
-            h = 0
-            m = 0
-            eList.forEach {
-                when (it.type) {
-                    'h' -> {
-                        h += it.num
+                    temp.clear()
+                    temp.addAll(list)
+                    c[i_ - 2].forEach {
+                        val itt = it
+                        list.forEach {
+                            temp.add(it + itt)
+                        }
                     }
-                    's' -> {
-                        m += it.num
-                    }
+                    list.clear()
+                    list.addAll(temp)
                 }
             }
-            if (h >= 12 || m > 59) {
-            } else if (m.toString().length < 2) {
-                list.add(h.toString() + ":0" + m.toString())
-            } else {
-                list.add(h.toString() + ":" + m.toString())
-
-            }
         }
+        list = list.filter { it.length == digits.length } as ArrayList<String>
         return list
     }
 
     companion object {
         @JvmStatic
         fun main(args: Array<String>) {
-            val cgf = _401()
-            val list = cgf.readBinaryWatch(2)
-            list.forEach {
-                print(it + "\t")
-            }
+            val cgf = _17()
+            val list = cgf.letterCombinations("1234")
+            list.forEach { print(it + "\t") }
         }
     }
 
-    /*
-        1           2           3               4
-    1              (1, 2)       (1, 3)          (1, 4)
-    2                           (2, 3)          (2, 4)
-    3                                           (3, 4)
-    4
-
-
-        (1, 2)  (1, 3)  (1, 4)   (2, 3)         (2, 4)      (3, 4)
-    1                            (1, 2, 3)      (1, 2, 4)   (1, 3, 4)
-    2                                                       (2, 3, 4)
-    3
-    4
-
-
-
-        1           2           3               4           5
-    1               (1, 2)      (1, 3)          (1, 4)      (1, 5)
-    2                           (2, 3)          (2, 4)      (2, 5)
-    3                                           (3, 4)      (3, 5)
-    4                                                       (4, 5)
-    5
-
-
-        (1, 2)  (1, 3)  (1, 4)  (1, 5)      (2, 3)         (2, 4)       (2, 5)           (3, 4)          (3, 5)                  (4, 5)
-    1                                       (1, 2, 3)      (1, 2, 4)    (1, 2, 5)        (1, 3, 4)       (1, 3, 5)               (1, 4, 5)
-    2                                                                                    (2, 3, 4)       (2, 3, 5)               (2, 4, 5)
-    3                                                                                                                            (3, 4, 5)
-    4
-    5
-
-    */
 
 }
