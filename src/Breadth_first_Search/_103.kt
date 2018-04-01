@@ -10,13 +10,13 @@ class _103 {
         val stackNext = ArrayList<TreeNode?>()
         stack.add(root)
 
-        var i = false
+        var i = 0
         var item: TreeNode?
         while (!stack.isEmpty()) {
-            val row = ArrayList<Int>()
             var rowSize = stack.size - 1
+            val row = ArrayList<Int>()
             while (!stack.isEmpty()) {
-                if (i) {
+                if (i % 3 == 1) {
                     item = stack.removeAt(0)
                     item?.`val`?.let { row.add(it) }
                     item?.left?.let { stackNext.add(it) }
@@ -28,7 +28,7 @@ class _103 {
                     item?.left?.let { stackNext.add(it) }
                 }
             }
-            i = !i
+            i++
 
             result.add(row)
             stack.addAll(stackNext)
