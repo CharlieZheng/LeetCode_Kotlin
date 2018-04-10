@@ -12,27 +12,27 @@ class _530 {
             queue.add(root)
             var left: Int
             var right: Int
-            var b =true
+            var b = true
             while (!queue.isEmpty()) {
                 left = 0
                 right = 0
                 val item = queue.poll()
 
-                item.left ?.let {
+                item.left?.let {
                     left = it.`val`
                     queue.add(it)
                 }
-                item.right ?.let {
+                item.right?.let {
                     right = it.`val`
                     queue.add(it)
                 }
                 if (Math.abs(item.`val` - left) >= Math.abs(item.`val` - right) && Math.abs(item.`val` - left) > result) {
-                    b = if (left-item.`val`<0) false else true
-                    result = Math.abs(left-item.`val`)
+                    b = if (left - item.`val` < 0) false else true
+                    result = Math.abs(left - item.`val`)
                 }
                 if (Math.abs(item.`val` - left) <= Math.abs(item.`val` - right) && Math.abs(item.`val` - right) > result) {
-                    b = if (right-item.`val`<0) false else true
-                    result = Math.abs(right-item.`val`)
+                    b = if (right - item.`val` < 0) false else true
+                    result = Math.abs(right - item.`val`)
                 }
             }
             return if (b) result else -result

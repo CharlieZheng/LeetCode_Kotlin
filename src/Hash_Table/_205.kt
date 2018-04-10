@@ -1,4 +1,5 @@
 package Hash_Table
+
 // NO AC
 class _205 {
     fun isIsomorphic(s: String, t: String): Boolean {
